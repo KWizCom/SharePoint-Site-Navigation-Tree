@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WebPart xmlns="http://schemas.microsoft.com/WebPart/v2" >
+	<Title>KWizCom Site Navigation Tree</Title>
+	<Description>Site Navigation Tree Web Part allows easy navigation between WSS sites.</Description>
+	<Assembly>KWizCom.Sharepoint.WebParts.SiteNavigationTree, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30fb4ddbec95ff8f</Assembly>
+	<TypeName>KWizCom.Sharepoint.WebParts.SiteNavigationTree.SiteNavigationTree</TypeName>
+	<!-- Specify initial values for any additional base class or custom properties here. -->
+	<PartImageLarge>/_layouts/images/STSICON.GIF</PartImageLarge>
+</WebPart>
