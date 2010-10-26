@@ -1,0 +1,16 @@
+﻿.TreeItemSelected
+{
+	background-color: beige;
+}
+.TreeItemUnSelected
+{
+	color: gray;
+}
+.TreeItemDisabled
+{
+	background-color: green;
+}
+.TreeItemHover
+{
+	background-color: gray;
+}

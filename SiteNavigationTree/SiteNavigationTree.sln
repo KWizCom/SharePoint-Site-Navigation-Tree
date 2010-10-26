@@ -1,0 +1,80 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2CB46751-B1D6-4C77-9580-0945B89C115F}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Items\InstallWP.bat = Solution Items\InstallWP.bat
+		Solution Items\recycle.js = Solution Items\recycle.js
+		Solution Items\UnInstallWP.bat = Solution Items\UnInstallWP.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteNavigationTreeWP", "SiteNavigationTreeWP\SiteNavigationTreeWP.csproj", "{FBCDE67C-D5A4-4434-8EE7-FF0063708F87}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SiteNavigationTree_Deploy", "SiteNavigationTree_Deploy\SiteNavigationTree_Deploy.vdproj", "{BA150F3F-5274-4B7F-B135-B9D3F25D7F2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeControl", "TreeControl\TreeControl.csproj", "{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installer", "Installer\Installer.csproj", "{8485227D-42F2-4DE6-8CE3-A301999E7C29}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_32", "Setup_32\Setup_32.vdproj", "{235639D7-5FDB-4A43-B330-E1F057F215D6}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_64", "Setup_64\Setup_64.vdproj", "{3E52155F-3458-4275-88FD-3035E7E40230}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Installer\\Installer.csproj
+		SccProjectName1 = Installer
+		SccLocalPath1 = Installer
+		SccProjectUniqueName2 = Setup_32\\Setup_32.vdproj
+		SccProjectName2 = Setup_32
+		SccLocalPath2 = Setup_32
+		SccProjectUniqueName3 = Setup_64\\Setup_64.vdproj
+		SccProjectName3 = Setup_64
+		SccLocalPath3 = Setup_64
+		SccProjectUniqueName4 = SiteNavigationTree_Deploy\\SiteNavigationTree_Deploy.vdproj
+		SccProjectName4 = SiteNavigationTree_Deploy
+		SccLocalPath4 = SiteNavigationTree_Deploy
+		SccProjectUniqueName5 = SiteNavigationTreeWP\\SiteNavigationTreeWP.csproj
+		SccProjectName5 = SiteNavigationTreeWP
+		SccLocalPath5 = SiteNavigationTreeWP
+		SccProjectUniqueName6 = TreeControl\\TreeControl.csproj
+		SccProjectName6 = TreeControl
+		SccLocalPath6 = TreeControl
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBCDE67C-D5A4-4434-8EE7-FF0063708F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBCDE67C-D5A4-4434-8EE7-FF0063708F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBCDE67C-D5A4-4434-8EE7-FF0063708F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBCDE67C-D5A4-4434-8EE7-FF0063708F87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA150F3F-5274-4B7F-B135-B9D3F25D7F2C}.Debug|Any CPU.ActiveCfg = Debug
+		{BA150F3F-5274-4B7F-B135-B9D3F25D7F2C}.Debug|Any CPU.Build.0 = Debug
+		{BA150F3F-5274-4B7F-B135-B9D3F25D7F2C}.Release|Any CPU.ActiveCfg = Release
+		{BA150F3F-5274-4B7F-B135-B9D3F25D7F2C}.Release|Any CPU.Build.0 = Release
+		{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8485227D-42F2-4DE6-8CE3-A301999E7C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8485227D-42F2-4DE6-8CE3-A301999E7C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8485227D-42F2-4DE6-8CE3-A301999E7C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8485227D-42F2-4DE6-8CE3-A301999E7C29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235639D7-5FDB-4A43-B330-E1F057F215D6}.Debug|Any CPU.ActiveCfg = Debug
+		{235639D7-5FDB-4A43-B330-E1F057F215D6}.Debug|Any CPU.Build.0 = Debug
+		{235639D7-5FDB-4A43-B330-E1F057F215D6}.Release|Any CPU.ActiveCfg = Release
+		{235639D7-5FDB-4A43-B330-E1F057F215D6}.Release|Any CPU.Build.0 = Release
+		{3E52155F-3458-4275-88FD-3035E7E40230}.Debug|Any CPU.ActiveCfg = Debug
+		{3E52155F-3458-4275-88FD-3035E7E40230}.Debug|Any CPU.Build.0 = Debug
+		{3E52155F-3458-4275-88FD-3035E7E40230}.Release|Any CPU.ActiveCfg = Release
+		{3E52155F-3458-4275-88FD-3035E7E40230}.Release|Any CPU.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
