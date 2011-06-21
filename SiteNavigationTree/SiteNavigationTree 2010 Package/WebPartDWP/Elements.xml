@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="WebPartDWP" List="113" Url="_catalogs/wp">
+	  <File Path="WebPartDWP\SiteNavigationTree.dwp" Url="SiteNavigationTree.dwp" Type="GhostableInLibrary">
+		  <Property Name="Group" Value="KWizCom" />
+	  </File>
+  </Module>	
+</Elements>
