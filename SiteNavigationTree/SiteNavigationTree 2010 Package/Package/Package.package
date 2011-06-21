@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="627122b1-3a4c-434c-b139-22d33b125e48" solutionId="627122b1-3a4c-434c-b139-22d33b125e48" resetWebServer="false" name="SiteNavigationTree 2010 Package" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <projectOutputAssembly location="KWizCom.TreeControl.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\TreeControl\TreeControl.csproj" />
+    <projectOutputAssembly location="KWizCom.Sharepoint.WebParts.SiteNavigationTree.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\SiteNavigationTreeWP\SiteNavigationTreeWP.csproj">
+      <safeControls>
+        <safeControl assemblyName="KWizCom.Sharepoint.WebParts.SiteNavigationTree.dll" namespaceName="KWizCom.Sharepoint.WebParts.SiteNavigationTree" typeName="*" isSafeAgainstScript="false" />
+      </safeControls>
+      <classResources>
+        <classResource sourcePath="..\SiteNavigationTreeWP\treecontrol.xsl" location="treecontrol.xsl" />
+        <classResource sourcePath="..\SiteNavigationTreeWP\script.js" location="script.js" />
+      </classResources>
+    </projectOutputAssembly>
+  </assemblies>
+  <features>
+    <featureReference itemId="810c3ee6-ad96-4410-8c2b-dfdadd82020c" />
+  </features>
+</package>

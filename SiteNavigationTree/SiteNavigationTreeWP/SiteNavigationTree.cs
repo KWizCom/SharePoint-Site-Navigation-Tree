@@ -294,7 +294,7 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 			//				theTreeControl.ItemStyles.DisabledCssName = this.DisabledCssName ;
 			if( this.HoverCssName != string.Empty )
 				theTreeControl.ItemStyles.HoverCssName = this.HoverCssName;
-			theTreeControl.XslFilePath = this.Page.Server.MapPath("/_wpresources/KWizCom.Sharepoint.WebParts.SiteNavigationTree/1.0.0.0__30fb4ddbec95ff8f/treecontrol.xsl");
+			theTreeControl.XslFilePath = this.Page.Server.MapPath("/_wpresources/KWizCom.Sharepoint.WebParts.SiteNavigationTree/1.0.0.0__96e74440bad80f40/treecontrol.xsl");
 			this.Controls.Add( theTreeControl );
 		}
 

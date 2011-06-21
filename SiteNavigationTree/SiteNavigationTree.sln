@@ -19,9 +19,15 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_32", "Setup_32\Setup_
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup_64", "Setup_64\Setup_64.vdproj", "{3E52155F-3458-4275-88FD-3035E7E40230}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteNavigationTree 2010 Package", "SiteNavigationTree 2010 Package\SiteNavigationTree 2010 Package.csproj", "{EF23A690-8E8F-470E-8643-4DF64F183ADA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C48B552F-ACC9-4A2D-8CCD-FA059E05F89C} = {C48B552F-ACC9-4A2D-8CCD-FA059E05F89C}
+		{FBCDE67C-D5A4-4434-8EE7-FF0063708F87} = {FBCDE67C-D5A4-4434-8EE7-FF0063708F87}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 8
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -43,6 +49,9 @@ Global
 		SccProjectUniqueName6 = TreeControl\\TreeControl.csproj
 		SccProjectName6 = TreeControl
 		SccLocalPath6 = TreeControl
+		SccProjectUniqueName7 = SiteNavigationTree\u00202010\u0020Package\\SiteNavigationTree\u00202010\u0020Package.csproj
+		SccProjectName7 = SiteNavigationTree\u00202010\u0020Package
+		SccLocalPath7 = SiteNavigationTree\u00202010\u0020Package
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +82,12 @@ Global
 		{3E52155F-3458-4275-88FD-3035E7E40230}.Debug|Any CPU.Build.0 = Debug
 		{3E52155F-3458-4275-88FD-3035E7E40230}.Release|Any CPU.ActiveCfg = Release
 		{3E52155F-3458-4275-88FD-3035E7E40230}.Release|Any CPU.Build.0 = Release
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF23A690-8E8F-470E-8643-4DF64F183ADA}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
