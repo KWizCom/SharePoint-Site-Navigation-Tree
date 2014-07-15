@@ -7,6 +7,6 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 	/// </summary>
 	public class Constants
 	{
-		public const string Version = "1.1.07";
+		public const string Version = "1.1.08";
 	}
 }
