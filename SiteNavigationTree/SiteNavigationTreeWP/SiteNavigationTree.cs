@@ -24,8 +24,10 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 	{
 		#region members
 		SPWeb currentWeb;
-		SPWeb treeRootWeb;
-		#endregion
+        SPSite treeRootSite;
+        SPWeb treeRootWeb;
+        bool needDispose = false;
+        #endregion
 
 		#region controls
 		KWizCom.Web.UI.WebControls.TreeControl theTreeControl;
@@ -85,7 +87,33 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 		}
 		
 		#endregion
-		
+
+        #region ShowErrors
+        private const bool defaultShowErrors = true;
+
+        private bool showErrors = defaultShowErrors;
+
+        [Browsable(true),
+        Category("Misc"),
+        DefaultValue(defaultShowErrors),
+        WebPartStorage(Storage.Personal),
+        FriendlyName("Show Errors"),
+        Description("When checked, shows all errors on the page. Uncheck this once you are done configuring your web part.")]
+        public bool ShowErrors
+        {
+            get
+            {
+                return showErrors;
+            }
+
+            set
+            {
+                showErrors = value;
+            }
+        }
+
+        #endregion
+
 		#region ExpandLevels
 		private const int defaultExpandLevels = 1;
 
@@ -317,10 +345,11 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 		#endregion
 
 		#region general methods
-		void AddError(Exception ex)
-		{//TODO: connect to error handler in the base
-			Page.Response.Write(ex.ToString().Replace("\n","<br>"));
-		}
+        void AddError(Exception ex)
+        {
+            if (this.ShowErrors)
+                Page.Response.Write(ex.ToString().Replace("\n", "<br>"));
+        }
 
 		void Initialize()
 		{
@@ -328,28 +357,45 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 			{
 				this.EnsureChildControls();
 
-				this.currentWeb = SPControl.GetContextWeb(Context);
+                this.currentWeb = SPContext.Current.Web;
 
 				if( this.RootUrl.Trim() != string.Empty )
 				{
 					try
 					{
-						this.treeRootWeb = new SPSite( new Uri(Page.Request.Url, this.RootUrl, true).ToString().Replace("%3A",":").Replace("%20"," ") ).OpenWeb();
+                        this.treeRootSite = new SPSite( new Uri(Page.Request.Url, this.RootUrl, true).ToString().Replace("%3A",":").Replace("%20"," ") );
+                        this.treeRootSite.CatchAccessDeniedException = false;//dont prompt for login, fail here.
+
+                        if (this.ShowEntireSiteCollection)
+                            this.treeRootWeb = this.treeRootSite.RootWeb;
+                        else
+    						this.treeRootWeb = this.treeRootSite.OpenWeb();
+                        this.needDispose = true;
 					}
 					catch(Exception exx)
 					{
-						AddError(exx);
+                        if (this.treeRootSite != null)
+                        {
+                            this.treeRootSite.Dispose();
+                            this.treeRootSite = null;
+                        }
+                        if (this.treeRootWeb != null)
+                        {
+                            this.treeRootWeb.Dispose();
+                            this.treeRootWeb = null;
+                        }
+                        AddError(exx);
 					}
 				}
-
-				if( this.treeRootWeb == null )
+				else
 				{
-					this.treeRootWeb = this.currentWeb;
-				}
+                    this.needDispose = false;
 
-				if( this.ShowEntireSiteCollection && !this.treeRootWeb.IsRootWeb )
-				{
-					this.treeRootWeb = this.treeRootWeb.Site.RootWeb;
+                    this.treeRootSite = SPContext.Current.Site;
+                    if (this.ShowEntireSiteCollection)
+                        this.treeRootWeb = SPContext.Current.Site.RootWeb;
+                    else
+                        this.treeRootWeb = this.currentWeb;
 				}
 			}
 			catch(Exception ex)
@@ -357,7 +403,6 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 				AddError(ex);
 			}
 		}
-
 
 		void BuildTree()
 		{
@@ -416,7 +461,7 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 
 			Initialize();
 
-			SPWeb parentWeb = treeRootWeb.Site.OpenWeb(new Guid(ParentWebID));
+			SPWeb parentWeb = treeRootSite.OpenWeb(new Guid(ParentWebID));
 
 			foreach(SPWeb sub in parentWeb.GetSubwebsForCurrentUser())
 				BuildTree(null,sub, this.ExpandLevels);
@@ -447,9 +492,9 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 		{
 			try
 			{
-				if( ! Page.IsClientScriptBlockRegistered("sitenavigationtree_script") )
+				if( ! Page.ClientScript.IsClientScriptBlockRegistered("sitenavigationtree_script") )
 				{
-					Page.RegisterClientScriptBlock("sitenavigationtree_script","<script src='"+this.ClassResourcePath+"/script.js'></script>");
+                    Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "sitenavigationtree_script", "<script src='" + this.ClassResourcePath + "/script.js'></script>");
 				}
 				Initialize();
 				BuildTree();
@@ -458,6 +503,16 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 			{
 				AddError(ex);
 			}
+
+            if (this.needDispose)
+            {
+                if (this.treeRootSite != null)
+                    this.treeRootSite.Dispose();
+                if (this.treeRootWeb != null)
+                    this.treeRootWeb.Dispose();
+                this.treeRootSite = null;
+                this.treeRootWeb = null;
+            }
 		}
 
 		private void SiteNavigationTree_Init(object sender, EventArgs e)
@@ -475,10 +530,8 @@ namespace KWizCom.Sharepoint.WebParts.SiteNavigationTree
 			{}
 			catch(Exception ex)
 			{
-				Page.Response.Clear();
-				Page.Response.Write(ex.ToString());
-				Page.Response.End();
-			}
+                AddError(ex);
+            }
 		}
 
 		#endregion
