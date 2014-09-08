@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="627122b1-3a4c-434c-b139-22d33b125e48" solutionId="627122b1-3a4c-434c-b139-22d33b125e48" resetWebServer="false" name="SiteNavigationTree 2010 Package 1.1.08" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="627122b1-3a4c-434c-b139-22d33b125e48" solutionId="627122b1-3a4c-434c-b139-22d33b125e48" resetWebServer="false" name="SiteNavigationTree 2010 Package 1.1.09" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <assemblies>
     <projectOutputAssembly location="KWizCom.TreeControl.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\TreeControl\TreeControl.csproj" />
     <projectOutputAssembly location="KWizCom.Sharepoint.WebParts.SiteNavigationTree.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\SiteNavigationTreeWP\SiteNavigationTreeWP.csproj">
