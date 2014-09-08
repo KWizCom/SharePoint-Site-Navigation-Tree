@@ -14,18 +14,11 @@ function SNT_PostRequestAndGetResult(requestUrl,requestBody)
 {
 	try
 	{
-		//send post to page.
-		//Create an instance of XMLHTTP
-		var objHTTP = new ActiveXObject("MSXML2.XMLHTTP");
+	    var objHTTP = new XMLHttpRequest();
 
-		// Open connection to the Action Page
-		objHTTP.Open ("POST", requestUrl, false); //Declare the action file
-		// Set the SOAP-Specific HTTP Headers
-		objHTTP.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		objHTTP.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
+		objHTTP.open ("GET", requestUrl + "?" + requestBody, false);
 
-		//Post the SOAP Request to the Action Page
-		objHTTP.send( requestBody );
+		objHTTP.send();
 
 		var strRes = objHTTP.responseText;
 		

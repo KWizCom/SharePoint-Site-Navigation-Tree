@@ -15,19 +15,18 @@ var TC_Suffix_CellChildLoad = "</table>";
 
 function TC_ShowSubFolders(imgObj, bIsHasChildren, ClientID)
 {
-	try
-	{
+	try {
 		if(bIsHasChildren == true)
 		{
-			var pDataRow = imgObj.parentElement.parentElement.nextSibling;
+		    var pDataRow = imgObj.parentNode.parentNode.nextSibling;
 			if (pDataRow.style.display == TC_Display_None)
 			{
-				if( pDataRow.all(TC_DummyID + imgObj.id) != null )
+			    if (TC_FindChildById(pDataRow, TC_DummyID + imgObj.id) != null)
 				{
 					TC_OpenDummyNode(pDataRow,imgObj);
 					try
 					{
-						pDataRow.all(TC_DummyID + imgObj.id).id = TC_LoadedID + imgObj.id;
+					    TC_FindChildById(pDataRow, TC_DummyID + imgObj.id).id = TC_LoadedID + imgObj.id;
 					}
 					catch(e)
 					{
@@ -46,12 +45,12 @@ function TC_ShowSubFolders(imgObj, bIsHasChildren, ClientID)
 			}
 		}
 
-		var oOpenTreeNodes = document.all(ClientID + TC_hdnOpenTreeNodes);
+		var oOpenTreeNodes = document.getElementById(ClientID + TC_hdnOpenTreeNodes);
 
-		if(imgObj.state == TC_Img_State_Expand)
+		if(imgObj.getAttribute("state") == TC_Img_State_Expand)
 		{
 			imgObj.src = imgObj.src.replace(/plus.gif/gi,TC_ImageName_Minus);
-			imgObj.state = TC_Img_State_Collapse;
+			imgObj.setAttribute(state,TC_Img_State_Collapse);
 
 			//add to open items...
 			if( oOpenTreeNodes )
@@ -62,7 +61,7 @@ function TC_ShowSubFolders(imgObj, bIsHasChildren, ClientID)
 		else
 		{
 			imgObj.src = imgObj.src.replace(/minus.gif/gi,TC_ImageName_Plus);
-			imgObj.state = TC_Img_State_Expand;
+			imgObj.setAttribute(state,TC_Img_State_Expand);
 
 			//remove from open items...
 			if( oOpenTreeNodes )
@@ -83,7 +82,7 @@ function TC_ItemOver(oSelRow, clientID)
 {
 	try
 	{
-		var oHiddenColumn = oSelRow.all["hiddencolumn"];
+	    var oHiddenColumn = TC_FindChildById(oSelRow,"hiddencolumn");
 		if( oHiddenColumn != null )
 			oHiddenColumn.style.visibility = "visible";
 		
@@ -99,7 +98,7 @@ function TC_ItemOut(oSelRow)
 {
 	try
 	{
-		var oHiddenColumn = oSelRow.all["hiddencolumn"];
+	    var oHiddenColumn = TC_FindChildById(oSelRow,"hiddencolumn");
 		if( oHiddenColumn != null )
 			oHiddenColumn.style.visibility = "hidden";
 		
@@ -119,7 +118,7 @@ function pause(numberMillis)
 function TC_OpenDummyNode(pDataRow, imgObj)
 {
 	//show loading image
-	pDataRow.all(TC_DummyID + imgObj.id).innerHTML = TC_ProgressBarImg;
+    TC_FindChildById(pDataRow,TC_DummyID + imgObj.id).innerHTML = TC_ProgressBarImg;
 	//show child row
 	pDataRow.style.display = '';
 	//let the image load...
@@ -127,7 +126,7 @@ function TC_OpenDummyNode(pDataRow, imgObj)
 	
 	var strChildren = null;
 	try
-	{eval("strChildren = " + pDataRow.all(TC_DummyID + imgObj.id).OnLoadChildren + ";");}
+	{ eval("strChildren = " + TC_FindChildById(pDataRow, TC_DummyID + imgObj.id).getAttribute("OnLoadChildren") + ";"); }
 	catch(e){strChildren = null}
 
 	//If data was returned:
@@ -142,16 +141,16 @@ function TC_OpenDummyNode(pDataRow, imgObj)
 		//remove +/-, remove child row.
 		imgObj.src = imgObj.src.replace(/plus.gif/gi,TC_ImageName_Blank);
 		imgObj.onclick = "";
-		pDataRow.all(TC_DummyID + imgObj.id).innerHTML  = '';
+		TC_FindChildById(pDataRow,TC_DummyID + imgObj.id).innerHTML = '';
 		pDataRow.style.display = TC_Display_None;
 		return;
 	}
 	else//load results
 	{	//						<tr>	<table>
-		//insert resutls into pDataRow.parentElement.innerHTML
+	    //insert resutls into pDataRow.parentNode.innerHTML
 		try
 		{
-			pDataRow.all(TC_DummyID + imgObj.id).innerHTML = TC_Prefix_CellChildLoad + strChildren + TC_Suffix_CellChildLoad;
+		    TC_FindChildById(pDataRow,TC_DummyID + imgObj.id).innerHTML = TC_Prefix_CellChildLoad + strChildren + TC_Suffix_CellChildLoad;
 		}
 		catch(e)
 		{
@@ -164,15 +163,28 @@ function TC_OpenDummyNode(pDataRow, imgObj)
 function TC_CollapseAll(ClientID)
 {
 	//collapse all the items besides the selected one
-	var oOpenTreeNodes = document.all(ClientID + TC_hdnOpenTreeNodes);
+	var oOpenTreeNodes = document.getElementById(ClientID + TC_hdnOpenTreeNodes);
 //	alert(oOpenTreeNodes.value);
 	oOpenTreeNodes.value = "";
 //	alert(oOpenTreeNodes.value);
 	var tblObj = document.getElementById('tableLabel');
-	var imgObj = tblObj.parentElement.parentElement.firstChild.firstChild;
+	var imgObj = tblObj.parentNode.parentNode.firstChild.firstChild;
 //	alert(imgObj.src);
 //	alert(imgObj.id);
 	TC_ShowSubFolders(imgObj, true, ClientID);
 	window.location.reload();
-//	alert(document.all(ClientID + TC_hdnOpenTreeNodes).value);
+	//	alert(document.getElementById(ClientID + TC_hdnOpenTreeNodes).value);
+}
+
+function TC_FindChildById(elmParent, elmId) {
+    //is it me?
+    if (elmParent.id == elmId)
+        return elmParent;
+    //search children recursive
+    for (var i = 0; i < elmParent.childNodes.length; i++) {
+        var result = TC_FindChildById(elmParent.childNodes[i], elmId);
+        if (result != null) return result;
+    }
+    //not found - return
+    return null;
 }
