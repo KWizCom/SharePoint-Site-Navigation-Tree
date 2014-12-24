@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b9c3ea91-827d-45d3-876e-95fa54766c19" solutionId="b9c3ea91-827d-45d3-876e-95fa54766c19" resetWebServer="false" sharePointProductVersion="15.0" name="Site Navigation Tree 2013 1.0.10" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="cd3cf3da-760f-4d69-804a-6f0435f1cad4" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="55e69794-9e24-46a9-9c85-72a0f152b328" />
+    <projectItemReference itemId="0ed1e621-ccba-468c-acb0-c119154aa90c" />
+  </projectItems>
+</package>
