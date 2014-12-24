@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="KWizCom.SiteNavigationTree2013.Site_Navigation_Tree.Site_Navigation_Tree, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">Site Navigation Tree - free by KWizCom</property>
+        <property name="Description" type="string">Free web part that shows a simple navigation tree for your sites, by KWizCom. This web part is free, should you require support please visit the codeplex page for this web part: https://ssnt.codeplex.com for advanced assistance, you may need to purchase annual support contract.</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
