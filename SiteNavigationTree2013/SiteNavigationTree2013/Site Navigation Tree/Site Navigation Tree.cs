@@ -28,16 +28,59 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 		#region Properties
 		#region Tree Properties
 		
-		#region RootUrl
+	    #region RootTitle
+		private const string defaultRootTitle = "";
+		private string rootTitle = defaultRootTitle;
+		[WebBrowsable(true),
+        Personalizable(PersonalizationScope.Shared),
+        Category("KWizCom Tree Settings"),
+		DefaultValue(defaultRootTitle),
+        WebDisplayName("Root Title"),
+        WebDescription("Root Title")]
+		public string RootTitle
+		{
+			get
+			{
+				return rootTitle;
+			}
+
+			set
+			{
+				rootTitle = value;
+			}
+		}
+	    #endregion
+	    #region RootTitleUrl
+		private const string defaultRootTitleUrl = "";
+		private string rootTitleUrl = defaultRootTitleUrl;
+		[WebBrowsable(true),
+        Personalizable(PersonalizationScope.Shared),
+        Category("KWizCom Tree Settings"),
+		DefaultValue(defaultRootTitle),
+        WebDisplayName("Root Url"),
+        WebDescription("Root Url")]
+		public string RootTitleUrl
+		{
+			get
+			{
+				return rootTitleUrl;
+			}
+
+			set
+			{
+				rootTitleUrl = value;
+			}
+		}
+	    #endregion
+	
+        #region RootUrl
 		private const string defaultRootUrl = "";
-
 		private string rootUrl = defaultRootUrl;
-
 		[WebBrowsable(true),
         Personalizable(PersonalizationScope.Shared),
         Category("KWizCom Tree Settings"),
 		DefaultValue(defaultRootUrl),
-        WebDisplayName("Root Web URL"),
+        WebDisplayName("Tree Web URL"),
         WebDescription("The URL to the site the tree will start from")]
 		public string RootUrl
 		{
@@ -377,7 +420,39 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 		{
 			try
 			{
-				BuildTree(null, this.treeRootWeb, 0);
+                XmlElement current = null;
+                if (!string.IsNullOrEmpty(this.RootTitleUrl))
+                {
+                    string iconUrl = "/_layouts/15/images/STSICON.GIF";
+                    string webDescription = "";
+                    string webID = "rootid";
+                    string webTitle = string.IsNullOrEmpty(this.RootTitle) ? this.RootTitleUrl : this.RootTitle;
+                    try
+                    {
+                        using (SPSite site = new SPSite(this.RootTitleUrl))
+                        {
+                            using (SPWeb web = site.OpenWeb())
+                            {
+                                string iconFile = web.Properties["treeicon"];
+                                if (iconFile != null && iconFile != "")
+                                    iconUrl = iconFile;
+                                webDescription = web.Description;
+                                webID = web.ID.ToString();
+                                webTitle = string.IsNullOrEmpty(this.RootTitle) ? web.Title : this.RootTitle;
+                            }
+                        }
+                    }
+                    catch { }
+                    current = this.theTreeControl.AddNode(ref current, webTitle, webDescription, webID,
+                        iconUrl, true, TreeItemState.Unselected, SPEncode.HtmlEncode(this.RootTitleUrl), "", "", "");
+                    int level = 0;
+                    foreach (SPWeb sub in this.treeRootWeb.GetSubwebsForCurrentUser())
+                        BuildTree(current, sub, level + 1);
+                }
+                else
+                {
+                    BuildTree(current, this.treeRootWeb, 0);
+                }
 			}
 			catch(Exception ex)
 			{
