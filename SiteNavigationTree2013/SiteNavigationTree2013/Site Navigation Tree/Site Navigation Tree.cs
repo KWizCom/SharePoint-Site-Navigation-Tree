@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
@@ -16,9 +17,8 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 	{
 		#region members
 		SPWeb currentWeb;
-        SPSite treeRootSite;
-        SPWeb treeRootWeb;
-        bool needDispose = false;
+        List<SPSite> treeRootSites = new List<SPSite>();
+        List<SPWeb> treeRootWebs = new List<SPWeb> ();
         #endregion
 
 		#region controls
@@ -81,7 +81,7 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
         Category("KWizCom Tree Settings"),
 		DefaultValue(defaultRootUrl),
         WebDisplayName("Tree Web URL"),
-        WebDescription("The URL to the site the tree will start from")]
+        WebDescription("The URL to the site the tree will start from. You can enter multiple root sites separated with a semicolon (;).")]
 		public string RootUrl
 		{
 			get
@@ -375,40 +375,39 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 				{
 					try
 					{
-                        this.treeRootSite = new SPSite( new Uri(Page.Request.Url, this.RootUrl, true).ToString().Replace("%3A",":").Replace("%20"," ") );
-                        this.treeRootSite.CatchAccessDeniedException = false;//dont prompt for login, fail here.
-
-                        if (this.ShowEntireSiteCollection)
-                            this.treeRootWeb = this.treeRootSite.RootWeb;
-                        else
-    						this.treeRootWeb = this.treeRootSite.OpenWeb();
-                        this.needDispose = true;
+                        string[] rootSites = this.RootUrl.Split(';');
+                        foreach (string rootSite in rootSites)
+                        {
+                            try
+                            {
+                                SPSite treeRootSite = new SPSite(new Uri(Page.Request.Url, rootSite, true).ToString().Replace("%3A", ":").Replace("%20", " "));
+                                treeRootSite.CatchAccessDeniedException = false;//dont prompt for login, fail here.
+                                treeRootSites.Add(treeRootSite);
+                                if (this.ShowEntireSiteCollection)
+                                    treeRootWebs.Add(treeRootSite.RootWeb);
+                                else
+                                    treeRootWebs.Add(treeRootSite.OpenWeb());
+                            }
+                            catch (Exception exx)
+                            {
+                                AddError(exx);
+                            }
+                        }
 					}
 					catch(Exception exx)
 					{
-                        if (this.treeRootSite != null)
-                        {
-                            this.treeRootSite.Dispose();
-                            this.treeRootSite = null;
-                        }
-                        if (this.treeRootWeb != null)
-                        {
-                            this.treeRootWeb.Dispose();
-                            this.treeRootWeb = null;
-                        }
                         AddError(exx);
-					}
+                    }
 				}
 				else
 				{
-                    this.needDispose = false;
-
-                    this.treeRootSite = SPContext.Current.Site;
+                    SPSite treeRootSite = new SPSite(SPContext.Current.Site.Url);
+                    treeRootSites.Add(treeRootSite);
                     if (this.ShowEntireSiteCollection)
-                        this.treeRootWeb = SPContext.Current.Site.RootWeb;
+                        treeRootWebs.Add(treeRootSite.RootWeb);
                     else
-                        this.treeRootWeb = this.currentWeb;
-				}
+                        treeRootWebs.Add(treeRootSite.OpenWeb());
+                }
 			}
 			catch(Exception ex)
 			{
@@ -445,15 +444,27 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
                     catch { }
                     current = this.theTreeControl.AddNode(ref current, webTitle, webDescription, webID,
                         iconUrl, true, TreeItemState.Unselected, SPEncode.HtmlEncode(this.RootTitleUrl), "", "", "");
-                    int level = 0;
-                    foreach (SPWeb sub in this.treeRootWeb.GetSubwebsForCurrentUser())
-                        BuildTree(current, sub, level + 1);
+                    //foreach (SPWeb sub in this.treeRootWeb.GetSubwebsForCurrentUser())
+                    //    BuildTree(current, sub, level + 1);
                 }
-                else
+                //else
+                //{
+                //    BuildTree(current, this.treeRootWeb, 0);
+                //}
+                foreach (SPWeb treeRootWeb in this.treeRootWebs)
                 {
-                    BuildTree(current, this.treeRootWeb, 0);
+                    int level = 0;
+                    if (this.treeRootWebs.Count == 1)
+                    {
+                        foreach (SPWeb sub in treeRootWeb.GetSubwebsForCurrentUser())
+                            BuildTree(current, sub, level + 1);
+                    }
+                    else
+                    {
+                        BuildTree(current, treeRootWeb, 0);
+                    }
                 }
-			}
+            }
 			catch(Exception ex)
 			{
 				AddError(ex);
@@ -505,10 +516,23 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 
 			Initialize();
 
-			SPWeb parentWeb = treeRootSite.OpenWeb(new Guid(ParentWebID));
-
-			foreach(SPWeb sub in parentWeb.GetSubwebsForCurrentUser())
-				BuildTree(null,sub, this.ExpandLevels);
+            foreach (SPSite treeRootSite in this.treeRootSites)
+            {
+                try
+                {
+                    SPWeb parentWeb = treeRootSite.OpenWeb(new Guid(ParentWebID));
+                    if (parentWeb.Exists)
+                    {
+                        foreach (SPWeb sub in parentWeb.GetSubwebsForCurrentUser())
+                            BuildTree(null, sub, this.ExpandLevels);
+                        break;
+                    }
+                }
+                catch
+                {
+                }
+            }
+			
 
 			childrenHTML = theTreeControl.GetChildrenHTML(TreeClientID);
 
@@ -536,15 +560,14 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 				AddError(ex);
 			}
 
-            if (this.needDispose)
+            foreach (SPWeb web in treeRootWebs)
             {
-                if (this.treeRootSite != null)
-                    this.treeRootSite.Dispose();
-                if (this.treeRootWeb != null)
-                    this.treeRootWeb.Dispose();
-                this.treeRootSite = null;
-                this.treeRootWeb = null;
+                web.Dispose();
             }
+            foreach (SPSite site in treeRootSites)
+            {
+                site.Dispose();
+            } 
 		}
 
 		private void SiteNavigationTree_Init(object sender, EventArgs e)
@@ -568,4 +591,5 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 
 		#endregion
 	}
+
 }
