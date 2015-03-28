@@ -97,7 +97,33 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
 		
 		#endregion
 
-		#region ShowEntireSiteCollection
+		#region ShowRootSites
+        private const bool defaultShowRootSites = false;
+
+        private bool showRootSites = defaultShowRootSites;
+
+        [WebBrowsable(true),
+        Personalizable(PersonalizationScope.Shared),
+        Category("KWizCom Tree Settings"),
+		DefaultValue(defaultShowEntireSiteCollection),
+        WebDisplayName("Show Root Sites"),
+        WebDescription("Ccheck this you want to see root sites in tree")]
+        public bool ShowRootSites
+		{
+			get
+			{
+                return showRootSites;
+			}
+
+			set
+			{
+                showRootSites = value;
+			}
+		}
+		
+		#endregion
+        
+        #region ShowEntireSiteCollection
 		private const bool defaultShowEntireSiteCollection = true;
 
 		private bool showEntireSiteCollection = defaultShowEntireSiteCollection;
@@ -454,7 +480,7 @@ namespace KWizCom.SiteNavigationTree2013.Site_Navigation_Tree
                 foreach (SPWeb treeRootWeb in this.treeRootWebs)
                 {
                     int level = 0;
-                    if (this.treeRootWebs.Count == 1)
+                    if (!this.ShowRootSites)
                     {
                         foreach (SPWeb sub in treeRootWeb.GetSubwebsForCurrentUser())
                             BuildTree(current, sub, level + 1);

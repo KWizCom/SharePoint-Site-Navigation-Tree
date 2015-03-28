@@ -183,7 +183,6 @@ namespace KWizCom.SiteNavigationTree2013
 
 			//create new tree item under parent
 			XmlElement treeItem =  elmParent.OwnerDocument.CreateElement(TreeXML_Elm_TreeItem);
-			elmParent.AppendChild(treeItem);
 
 			//fill new tree item with data.
 			treeItem.SetAttribute(TreeXML_Attribue_Title, Title.Replace("\"","''"));
@@ -214,7 +213,19 @@ namespace KWizCom.SiteNavigationTree2013
 
 			treeItem.SetAttribute(TreeXML_Attribue_State,State.ToString());
 
-			return treeItem;
+            bool isAdded = false;
+		    foreach(XmlNode node in elmParent.ChildNodes)
+            {
+                if(treeItem.Attributes[TreeXML_Attribue_Title].Value.CompareTo(node.Attributes[TreeXML_Attribue_Title].Value) < 0)
+                {
+                    elmParent.InsertBefore(treeItem, node);
+                    isAdded = true;
+                    break;
+                }
+            }
+            if(!isAdded)
+			    elmParent.AppendChild(treeItem);
+    	    return treeItem;
 		}
 		public void AddDummyNode(ref XmlElement elmParent)
 		{
